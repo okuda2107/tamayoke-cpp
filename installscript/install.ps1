@@ -87,3 +87,7 @@ if( -not (Test-Path (Join-Path $ExlibsDir "freealut"))) {
     cmake --build $(Join-Path $TmpDir "build") --config Release
     cmake --install $(Join-Path $TmpDir "build") --prefix $(Join-Path $TmpDir "install")
 }
+
+if( -not (Test-Path (Join-Path $ExlibsDir "onnxruntime-win-x64-1.24.3"))) {
+    Download-Lib "https://github.com/microsoft/onnxruntime/releases/download/v1.24.3/onnxruntime-win-x64-1.24.3.zip" $ExlibsDir
+}
