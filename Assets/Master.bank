@@ -1,0 +1,24 @@
+{
+    "bankName": "MainBank",
+    "version": 1,
+    "events": [
+        {
+            "id": "takibi",
+            "file": "Assets/takibi.mp3",
+            "is3D": true,
+            "stream": false,
+            "loop": true,
+            "volume": 1.0,
+            "pitch": 1.0
+        },
+        {
+            "id": "bgm_main",
+            "file": "Assets/mac.mp3",
+            "is3D": true,
+            "stream": false,
+            "loop": true,
+            "volume": 1.0,
+            "pitch": 1.0
+        }
+    ]
+}

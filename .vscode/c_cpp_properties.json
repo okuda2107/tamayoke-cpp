@@ -1,0 +1,47 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/engine/**",
+                "/usr/include/SDL2",
+                "/usr/include/SOIL",
+                "/usr/include/GL",
+                "/usr/include/AL",
+                "/usr/include/rapidjson"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/g++",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        },
+        {
+            "name": "Windows",
+            "includePath": [
+                "${workspaceFolder}/engine/**",
+                "${workspaceFolder}/engine_temp/**",
+                "${workspaceFolder}/exlibs/googletest-1.17.0/googletest/include",
+                "${workspaceFolder}/exlibs/SDL2-2.32.8/x86_64-w64-mingw32/include/SDL2",
+                "${workspaceFolder}/exlibs/SDL2_image-2.8.8/x86_64-w64-mingw32/include/SDL2",
+                "${workspaceFolder}/exlibs/SDL2_mixer-2.8.1/x86_64-w64-mingw32/include/SDL2",
+                "${workspaceFolder}/exlibs/SDL2_ttf-2.24.0/x86_64-w64-mingw32/include/SDL2",
+                "${workspaceFolder}/exlibs/Simple-OpenGL-Image-Library/install/include/SOIL",
+                "${workspaceFolder}/exlibs/rapidjson/include",
+                "${workspaceFolder}/exlibs/rapidjson/include/rapidjson",
+                "${workspaceFolder}/exlibs/openal-soft-1.24.3-bin/include",
+                "${workspaceFolder}/exlibs/freealut/install/include",
+                "${workspaceFolder}/engine/include",
+                "${workspaceFolder}/exlibs/glew-2.2.0/install/include",
+                "${workspaceFolder}/demo",
+                "${workspaceFolder}/exlibs/openal-soft-1.24.3-bin/include/AL"
+            ],
+            "defines": [],
+            "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
+            "cStandard": "c17",
+            "cppStandard": "gnu++20",
+            "intelliSenseMode": "gcc-x64"
+        }
+    ],
+    "version": 4
+}

@@ -1,0 +1,16 @@
+file(GLOB_RECURSE CXX_FILES CONFIGURE_DEPENDS
+    "*.cpp"
+)
+
+add_executable(app ${CXX_FILES})
+
+target_link_libraries(app PRIVATE engine)
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+# libgcc.a と libstdc++.a を静的リンク
+    target_link_options(app PRIVATE
+        -static-libgcc
+        -static-libstdc++
+        -mconsole
+    )
+endif()

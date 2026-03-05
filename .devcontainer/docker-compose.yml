@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+    dev:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            args :
+              UID: 1000
+              GID: 1000
+              USER: vscode
+        working_dir: /workspace
+        volumes:
+            - type: bind
+              source: ..
+              target: /workspace
+              consistency: cached
+            # windowを出すためのソケットファイルマウント
+            - type: bind
+              source: /tmp/.X11-unix/X0
+              target: /tmp/.X11-unix/X0
+            # gpuのデバイスファイルマウント
+            - type: bind
+              source: /dev/dri/card0
+              target: /dev/dri/card0
+            # PulseServerファイルマウント
+            - type: bind
+              source: /mnt/wslg
+              target: /mnt/wslg
+        command: /bin/sh -c "while sleep 1000; do :; done" # devcontainerで起動させるために必要
+        environment:
+          - DISPLAY=:0
+          - PULSE_SERVER=unix:/mnt/wslg/PulseServer
+        # deploy:
+        #     resources:
+        #         reservations:
+        #             devices:
+        #                 - capabilities: [gpu]

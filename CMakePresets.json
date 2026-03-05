@@ -1,0 +1,54 @@
+{
+    "version": 6,
+    "configurePresets": [
+        {
+            "name": "windows-x64-mingw-debug",
+            "generator": "MinGW Makefiles",
+            "binaryDir": "build",
+            "toolchainFile": "./toolchains/x64-windows.cmake",
+            "cacheVariables": {
+                "SDL2_ROOT": "${sourceDir}/exlibs/SDL2-2.32.8/x86_64-w64-mingw32",
+                "SDL2_image_ROOT": "${sourceDir}/exlibs/SDL2_image-2.8.8/x86_64-w64-mingw32",
+                "SDL2_mixer_ROOT": "${sourceDir}/exlibs/SDL2_mixer-2.8.1/x86_64-w64-mingw32",
+                "SDL2_net_ROOT": "${sourceDir}/exlibs/SDL2_net-2.2.0/x86_64-w64-mingw32",
+                "SDL2_ttf_ROOT": "${sourceDir}/exlibs/SDL2_ttf-2.24.0/x86_64-w64-mingw32",
+                "GLEW_ROOT": "${sourceDir}/exlibs/glew-2.2.0/install",
+                "OPENAL_INCLUDE_DIR": "${sourceDir}/exlibs/openal-soft-1.24.3-bin/include",
+                "OPENAL_LIBRARY": "${sourceDir}/exlibs/openal-soft-1.24.3-bin/libs/Win64/OpenAL32.lib",
+                "OPENAL_DLL": "${sourceDir}/exlibs/openal-soft-1.24.3-bin/bin/Win64/soft_oal.dll;${sourceDir}/exlibs/openal-soft-1.24.3-bin/router/Win64/OpenAL32.dll",
+                "ALUT_INCLUDE_DIR": "${sourceDir}/exlibs/freealut/install/include",
+                "ALUT_LIBRARY": "${sourceDir}/exlibs/freealut/install/lib/libalut.dll.a",
+                "ALUT_DLL": "${sourceDir}/exlibs/freealut/install/bin/libalut.dll",
+                "RAPIDJSON_INCLUDE_DIR": "${sourceDir}/exlibs/rapidjson/include/rapidjson;${sourceDir}/exlibs/rapidjson/include",
+                "SOIL_INCLUDE_DIR": "${sourceDir}/exlibs/Simple-OpenGL-Image-Library/install/include/SOIL",
+                "SOIL_LIBRARY": "${sourceDir}/exlibs/Simple-OpenGL-Image-Library/install/lib/libSOIL.a",
+                "DLL_FILES": "C:/msys64/mingw64/bin/libwinpthread-1.dll"
+            }
+        },
+        {
+            "name": "windows-x64-mingw-release",
+            "generator": "MinGW Makefiles",
+            "binaryDir": "build",
+            "toolchainFile": "./toolchains/x64-windows.cmake",
+            "cacheVariables": {
+                "SDL2_ROOT": "${sourceDir}/exlibs/SDL2-2.32.8/x86_64-w64-mingw32",
+                "SDL2_image_ROOT": "${sourceDir}/exlibs/SDL2_image-2.8.8/x86_64-w64-mingw32",
+                "SDL2_mixer_ROOT": "${sourceDir}/exlibs/SDL2_mixer-2.8.1/x86_64-w64-mingw32",
+                "SDL2_net_ROOT": "${sourceDir}/exlibs/SDL2_net-2.2.0/x86_64-w64-mingw32",
+                "SDL2_ttf_ROOT": "${sourceDir}/exlibs/SDL2_ttf-2.24.0/x86_64-w64-mingw32",
+                "GLEW_ROOT": "${sourceDir}/exlibs/glew-2.2.0/install",
+                "OPENAL_INCLUDE_DIR": "${sourceDir}/exlibs/openal-soft-1.24.3-bin/include",
+                "OPENAL_LIBRARY": "${sourceDir}/exlibs/openal-soft-1.24.3-bin/libs/Win64/OpenAL32.lib",
+                "OPENAL_DLL": "${sourceDir}/exlibs/openal-soft-1.24.3-bin/bin/Win64/soft_oal.dll;${sourceDir}/exlibs/openal-soft-1.24.3-bin/router/Win64/OpenAL32.dll",
+                "ALUT_INCLUDE_DIR": "${sourceDir}/exlibs/freealut/install/include",
+                "ALUT_LIBRARY": "${sourceDir}/exlibs/freealut/install/lib/libalut.dll.a",
+                "ALUT_DLL": "${sourceDir}/exlibs/freealut/install/bin/libalut.dll",
+                "RAPIDJSON_INCLUDE_DIR": "${sourceDir}/exlibs/rapidjson/include/rapidjson;${sourceDir}/exlibs/rapidjson/include",
+                "SOIL_INCLUDE_DIR": "${sourceDir}/exlibs/Simple-OpenGL-Image-Library/install/include/SOIL",
+                "SOIL_LIBRARY": "${sourceDir}/exlibs/Simple-OpenGL-Image-Library/install/lib/libSOIL.a",
+                "DLL_FILES": "C:/msys64/mingw64/bin/libwinpthread-1.dll",
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        }
+    ]
+}
