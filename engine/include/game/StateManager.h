@@ -1,4 +1,5 @@
 #pragma once
+#include "game/base/GameSystemBase.h"
 
 enum class GameState {
     EGameplay,
@@ -6,7 +7,7 @@ enum class GameState {
 };
 
 // Gameのループ状態を制御するためのクラス
-class StateManager {
+class StateManager : public GameSystemBase {
    public:
     StateManager() : mState(GameState::EGameplay) {}
     GameState mState;

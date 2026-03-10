@@ -2,6 +2,7 @@
 #include <string>
 #include <unordered_map>
 
+#include "game/base/GameSystemBase.h"
 #include "game/object/Actor.h"
 
 struct SceneContext {
@@ -11,7 +12,7 @@ struct SceneContext {
     ActorID actorID;
 };
 
-class SceneManager {
+class SceneManager : public GameSystemBase {
     std::string mCurrentSceneTag = "";
     std::unordered_map<std::string, class Scene*> mScenes;
 

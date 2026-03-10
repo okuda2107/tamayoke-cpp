@@ -2,13 +2,14 @@
 #include <unordered_map>
 
 #include "core/Math.h"
+#include "game/base/GameSystemBase.h"
 
 /*
     AudioComponent: Actorで音声情報を扱うためのComponent
     SoundHandler: 音声を操作するためのhandler
 */
 template <typename SoundHandler>
-class AudioSystemBase {
+class AudioSystemBase : public GameSystemBase {
    protected:
     virtual void Shutdown() = 0;
 

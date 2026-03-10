@@ -4,11 +4,12 @@
 
 #include "Collision.h"
 #include "core/Math.h"
+#include "game/base/GameSystemBase.h"
 
 // Collision情報を管理
 // Collision群が引数に与えたCollisionが交わっているかどうかや，
 // Collision群同士を比較して接触しているモノ同士で処理
-class PhysWorld {
+class PhysWorld : public GameSystemBase {
     std::unordered_map<std::string, std::vector<class BoxComponent*>> mBoxes;
     std::unordered_map<std::string, std::vector<class SphereComponent*>>
         mSpheres;

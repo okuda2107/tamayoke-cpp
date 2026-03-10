@@ -2,8 +2,9 @@
 #include <unordered_map>
 
 #include "RenderData.h"
+#include "game/base/GameSystemBase.h"
 
-class RenderDB {
+class RenderDB : public GameSystemBase {
     RenderData mData;
 
     // assetの管理

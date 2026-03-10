@@ -3,9 +3,11 @@
 #include <unordered_map>
 #include <vector>
 
+#include "game/base/GameSystemBase.h"
+
 typedef uint32_t UIID;
 
-class UISystem {
+class UISystem : public GameSystemBase {
     std::vector<class UIScreen*> mUIStack;
 
     std::unordered_map<UIID, class UIScreen*> mLendingMap;
