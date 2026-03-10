@@ -34,7 +34,9 @@
                 "${workspaceFolder}/engine/include",
                 "${workspaceFolder}/exlibs/glew-2.2.0/install/include",
                 "${workspaceFolder}/demo",
-                "${workspaceFolder}/exlibs/openal-soft-1.24.3-bin/include/AL"
+                "${workspaceFolder}/exlibs/openal-soft-1.24.3-bin/include/AL",
+                "${workspaceFolder}/exlibs/onnxruntime-win-x64-1.24.3/include",
+                "${workspaceFolder}/exlibs/opencv/build/include"
             ],
             "defines": [],
             "compilerPath": "C:/msys64/mingw64/bin/g++.exe",

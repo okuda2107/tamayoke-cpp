@@ -91,3 +91,14 @@ if( -not (Test-Path (Join-Path $ExlibsDir "freealut"))) {
 if( -not (Test-Path (Join-Path $ExlibsDir "onnxruntime-win-x64-1.24.3"))) {
     Download-Lib "https://github.com/microsoft/onnxruntime/releases/download/v1.24.3/onnxruntime-win-x64-1.24.3.zip" $ExlibsDir
 }
+
+if( -not (Test-Path (Join-Path $ExlibsDir "opencv"))) {
+    $opencvUrl = "https://github.com/opencv/opencv/releases/download/4.13.0/opencv-4.13.0-windows.exe"
+    $outFile = "$env:TEMP\opencv-installer.exe"
+
+    Invoke-WebRequest $opencvUrl -OutFile $outFile
+    Start-Process `
+        -FilePath $outFile `
+        -ArgumentList "-o$ExlibsDir", "-y" `
+        -Wait
+}
