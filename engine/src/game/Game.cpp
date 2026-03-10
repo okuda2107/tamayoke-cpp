@@ -3,66 +3,47 @@
 #include "SDL.h"
 #include "game/RuntimeRequestManager.h"
 #include "game/StateManager.h"
-#include "game/UI/UIScreen.h"
-#include "game/UI/UISystem.h"
 #include "game/audio/AudioSystem.h"
-#include "game/object/ActorsSystem.h"
 #include "game/physics/PhysWorld.h"
-#include "game/scene/ActorQuery.h"
-#include "game/scene/SceneManager.h"
 #include "input/InputState.h"
 #include "renderer/RenderDB.h"
 #include "renderer/RenderData.h"
 
 Game::Game() {
-    mActorsSystem = new ActorsSystem();
-    mRenderDB = new RenderDB();
-    mAudioSystem = new AudioSystem();
-    mPhysWorld = new PhysWorld();
-    mUISystem = new UISystem();
-    mStateManager = new StateManager();
-    mReqManager = new RuntimeRequestManager();
-    mReqManager->mInputSystemMetricsRequest.mRelativeMouseMode = true;
-    mSceneManager = new SceneManager();
+    auto renderDB = new RenderDB();
+    auto audioSystem = new AudioSystem();
+    auto physWorld = new PhysWorld();
+    auto stateManager = new StateManager();
+    auto reqManager = new RuntimeRequestManager();
+    reqManager->mInputSystemMetricsRequest.mRelativeMouseMode = true;
 
-    ActorQueryDeps acd = ActorQueryDeps{
-        *mActorsSystem, *mRenderDB,     *mAudioSystem, *mPhysWorld,
-        *mUISystem,     *mStateManager, *mReqManager,
-    };
-    mActorQuery = new ActorQuery(acd);
+    mSystems.AddSystem(renderDB);
+    mSystems.AddSystem(audioSystem);
+    mSystems.AddSystem(physWorld);
+    mSystems.AddSystem(stateManager);
+    mSystems.AddSystem(reqManager);
 
     mFrameResult.mIsGameLoop = true;
     mFrameResult.mRelativeMouseMode = true;
 }
 
-Game::~Game() {
-    // ゲームオブジェクト管理類はsystem群に大きく依存しているので，先にdeleteする必要がある．
-    delete mActorsSystem;
-    delete mSceneManager;
-    delete mUISystem;
-    delete mActorQuery;
-    delete mPhysWorld;
-    delete mAudioSystem;
-    delete mRenderDB;
-    delete mStateManager;
-    delete mReqManager;
-}
-
 bool Game::Initialize() {
     try {  // 初期化に失敗したら初期状態にロールバックを行う
-        if (!mRenderDB->Initialize()) {
+        if (!mSystems.GetSystem<RenderDB>()->Initialize()) {
             throw std::runtime_error("Failed to Initialize RenderDB");
         }
 
-        if (!mAudioSystem->Initialize()) {
+        if (!mSystems.GetSystem<AudioSystem>()->Initialize()) {
             throw std::runtime_error("Failed to initialize audio system");
         }
     } catch (const std::runtime_error& e) {
         SDL_Log(e.what());
-        delete mRenderDB;
-        delete mAudioSystem;
-        mRenderDB = new RenderDB();
-        mAudioSystem = new AudioSystem();
+        delete mSystems.GetSystem<RenderDB>();
+        delete mSystems.GetSystem<AudioSystem>();
+        auto renderDB = new RenderDB();
+        auto audioSystem = new AudioSystem();
+        mSystems.AddSystem(renderDB);
+        mSystems.AddSystem(audioSystem);
 
         return false;
     }
@@ -81,36 +62,39 @@ void Game::ProcessInput(const InputState& state) {
     }
 
     // 入力に対して，ゲームオブジェクト，UIを反応させる
-    if (mStateManager->mState == GameState::EGameplay) {
-        mActorsSystem->ProcessInput(state);
-    } else if (!mUISystem->GetUIStack().empty()) {
-        mUISystem->GetUIStack().back()->ProcessInput(state);
+    if (mSystems.GetSystem<StateManager>()->mState == GameState::EGameplay) {
+        mSystems.GetSystem<ActorsSystem>()->ProcessInput(state);
+    } else if (!mSystems.GetSystem<UISystem>()->GetUIStack().empty()) {
+        mSystems.GetSystem<UISystem>()->GetUIStack().back()->ProcessInput(
+            state);
     }
 }
 
 const GameFrameResult& Game::Update(float deltatime,
                                     const struct GameMetricsBase& metrics) {
-    mAudioSystem->Update(deltatime);
-    mActorsSystem->UpdateObjects(deltatime);
-    mUISystem->Update(deltatime);
+    mSystems.GetSystem<AudioSystem>()->Update(deltatime);
+    mSystems.GetSystem<ActorsSystem>()->UpdateObjects(deltatime);
+    mSystems.GetSystem<UISystem>()->Update(deltatime);
     mFrameResult.mRelativeMouseMode =
-        mReqManager->mInputSystemMetricsRequest.mRelativeMouseMode;
-    mSceneManager->Update();
+        mSystems.GetSystem<RuntimeRequestManager>()
+            ->mInputSystemMetricsRequest.mRelativeMouseMode;
     return mFrameResult;
 }
 
 const RenderData& Game::GenerateRenderData() {
-    if (!mUISystem->GetUIStack().empty())
-        mRenderDB->SetUI(&mUISystem->GetUIStack());
+    auto renderDB = mSystems.GetSystem<RenderDB>();
+    auto uiSystem = mSystems.GetSystem<UISystem>();
+    if (!uiSystem->GetUIStack().empty())
+        renderDB->SetUI(&uiSystem->GetUIStack());
     else
-        mRenderDB->SetUI(nullptr);
-    return mRenderDB->GetData();
+        renderDB->SetUI(nullptr);
+    return renderDB->GetData();
 }
 
 void Game::SetAmbientLight(Vector3 ambientLight) {
-    mRenderDB->SetAmbientLight(ambientLight);
+    mSystems.GetSystem<RenderDB>()->SetAmbientLight(ambientLight);
 }
 
 void Game::LoadAudioBank(const std::string& name) {
-    mAudioSystem->LoadBank(name);
+    mSystems.GetSystem<AudioSystem>()->LoadBank(name);
 }

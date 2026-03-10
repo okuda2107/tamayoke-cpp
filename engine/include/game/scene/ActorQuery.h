@@ -2,6 +2,7 @@
 #include <type_traits>
 
 #include "game/UI/UIScreen.h"
+#include "game/base/GameSystemVector.h"
 #include "game/object/Actor.h"
 
 template <typename... T>
@@ -21,28 +22,28 @@ struct ActorQueryDeps {
         ActorsSystemの方を依存関係に含める
     */
     class ActorsSystem& actorsSystem;
-    class RenderDB& renderDB;
-    class AudioSystem& audioSystem;
-    class PhysWorld& physWorld;
     class UISystem& uiSystem;
-    class StateManager& stateManager;
-    class RuntimeRequestManager& runtimeReqManager;
+    GameSystemVector& systems;
 };
 
-class ActorQuery {
-    ActorQueryDeps mSystems;
-
-    template <typename T>
-    T& GetSystem();
+class ActorQuery : public GameSystemBase {
+    // オブジェクトの依存先となり得るシステム群を保持
+    GameSystemVector& mSystems;
+    // Actor, UI生成に必要であるため別に持っておく
+    class ActorsSystem& mActorsSystem;
+    class UISystem& mUISystem;
 
     // TDeps -> TypeLists を解決するための補助関数
     template <typename T, typename... Ts>
     T ResolveDeps(TypeLists<Ts...> _) {
-        return T(GetSystem<Ts>()...);
+        return T(*(mSystems.GetSystem<Ts>())...);
     }
 
    public:
-    ActorQuery(ActorQueryDeps aqd) : mSystems(aqd) {}
+    ActorQuery(ActorQueryDeps aqd)
+        : mSystems(aqd.systems),
+          mActorsSystem(aqd.actorsSystem),
+          mUISystem(aqd.uiSystem) {}
 
     // todo: 上手くテンプレートメタプログラミングを行えば，TActorのみの指定で良くなるらしい
     // Actorクラスの内部にTDepsやTListsの型指定を行う．このときstatic_assertで型が定義されているかをチェックする必要がある．
@@ -56,13 +57,13 @@ class ActorQuery {
         static_assert(std::is_base_of<Actor, TActor>::value,
                       "TActor must derive from Actor");
         static_assert(IsTypeLists<TLists>::value,
-                      "TListss must be a TypeLists<...>");
+                      "TLists must be a TypeLists<...>");
 
         // 依存関係depsの解決
         TDeps deps = ResolveDeps<TDeps>(TLists{});
 
         // Actor生成
-        TActor* actor = new TActor(&mSystems.actorsSystem, deps);
+        TActor* actor = new TActor(&mActorsSystem, deps);
 
         return actor->GetID();
     }
@@ -78,54 +79,18 @@ class ActorQuery {
         TDeps deps = ResolveDeps<TDeps>(TLists{});
 
         // UI生成
-        TUI* ui = new TUI(&mSystems.uiSystem, deps);
+        TUI* ui = new TUI(&mUISystem, deps);
 
         return ui->GetID();
     }
 
     template <typename TActor>
     TActor* GetActor(ActorID id) {
-        return mSystems.actorsSystem.GetActor<TActor>(id);
+        return mActorsSystem.GetActor<TActor>(id);
     }
 
     template <typename TUI>
     TUI* GetUI(UIID id) {
-        return mSystems.uiSystem.GetUI<TUI>(id);
+        return mUISystem.GetUI<TUI>(id);
     }
 };
-
-template <>
-inline class ActorsSystem& ActorQuery::GetSystem<ActorsSystem>() {
-    return mSystems.actorsSystem;
-}
-
-template <>
-inline class RenderDB& ActorQuery::GetSystem<RenderDB>() {
-    return mSystems.renderDB;
-}
-
-template <>
-inline class AudioSystem& ActorQuery::GetSystem<AudioSystem>() {
-    return mSystems.audioSystem;
-}
-
-template <>
-inline class PhysWorld& ActorQuery::GetSystem<PhysWorld>() {
-    return mSystems.physWorld;
-}
-
-template <>
-inline class UISystem& ActorQuery::GetSystem<UISystem>() {
-    return mSystems.uiSystem;
-}
-
-template <>
-inline class StateManager& ActorQuery::GetSystem<StateManager>() {
-    return mSystems.stateManager;
-}
-
-template <>
-inline class RuntimeRequestManager&
-ActorQuery::GetSystem<RuntimeRequestManager>() {
-    return mSystems.runtimeReqManager;
-}
