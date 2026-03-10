@@ -1,6 +1,7 @@
 #pragma once
 #include <type_traits>
 
+#include "GameSystemVector.h"
 #include "IGame.h"
 
 // ゲームの内部での処理定義を責務とする
@@ -18,6 +19,10 @@ class GameBase : public IGame {
 
     static_assert(std::is_base_of<GameMetricsBase, GameMetrics>::value,
                   "GameMetrics must derive from GameMetricsBase");
+
+   protected:
+    // ゲームで用いられるサブシステムを抽象化して持っておく
+    GameSystemVector mSystems;
 
    public:
     GameBase() = default;
