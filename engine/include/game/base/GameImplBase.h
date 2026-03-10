@@ -7,6 +7,7 @@
 #include "game/scene/SceneManager.h"
 
 // ゲーム内部でActor, UI, Scene, ActorQueryを持つことを定義するクラス
+// Updateを実装する際に，GameImplBase::Update()処理を差し込む必要がある
 template <typename InputState, typename RenderData, typename GameData,
           typename GameMetrics>
 class GameImplBase
@@ -35,6 +36,9 @@ class GameImplBase
         delete mSceneManager;
         delete mActorQuery;
     }
+
+    // GameクラスのUpdateに組み込む必要がある
+    void Update() { mSceneManager->Update(); }
 
     template <typename TScene>
     bool SetScene(const std::string& tag) {
