@@ -1,11 +1,13 @@
 #pragma once
+#include "game/StateManager.h"
 #include "game/UI/UIScreen.h"
+#include "renderer/RenderDB.h"
 
 struct BonfireUIDeps : UIDeps {
     class RenderDB& renderDB;
     class StateManager& stateManager;
 
-    BonfireUIDeps(class RenderDB& renderDB, class StateManager& stateManager)
+    BonfireUIDeps(RenderDB& renderDB, StateManager& stateManager)
         : UIDeps(), renderDB(renderDB), stateManager(stateManager) {}
 };
 

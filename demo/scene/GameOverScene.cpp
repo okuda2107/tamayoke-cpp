@@ -4,8 +4,10 @@
 #include "../actor/Bonfire.h"
 #include "../actor/BonfirePlayer.h"
 #include "../scene/BonfireSceneTag.h"
+#include "game/StateManager.h"
 #include "game/scene/ActorQuery.h"
 #include "game/scene/SceneManager.h"
+#include "renderer/RenderDB.h"
 
 void GameOverScene::LoadActors() {
     // result

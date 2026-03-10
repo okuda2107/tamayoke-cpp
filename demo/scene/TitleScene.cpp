@@ -5,6 +5,8 @@
 #include "../actor/Bonfire.h"
 #include "../actor/BonfirePlayer.h"
 #include "BonfireSceneTag.h"
+#include "game/audio/AudioSystem.h"
+#include "game/physics/PhysWorld.h"
 #include "game/scene/ActorQuery.h"
 #include "game/scene/SceneManager.h"
 

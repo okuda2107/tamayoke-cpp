@@ -1,10 +1,11 @@
 #pragma once
 #include "game/object/Actor.h"
+#include "renderer/RenderDB.h"
 
 struct FloorDeps {
-    class RenderDB& renderDB;
+    RenderDB& renderDB;
 
-    FloorDeps(class RenderDB& render) : renderDB(render) {};
+    FloorDeps(RenderDB& render) : renderDB(render) {};
 };
 
 class Floor : public Actor {

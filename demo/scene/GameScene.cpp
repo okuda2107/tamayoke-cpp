@@ -6,8 +6,10 @@
 #include "../actor/Wood.h"
 #include "BonfireSceneTag.h"
 #include "core/Random.h"
+#include "game/physics/PhysWorld.h"
 #include "game/scene/ActorQuery.h"
 #include "game/scene/SceneManager.h"
+#include "renderer/RenderDB.h"
 
 void GameScene::LoadActors() {
     // Timerのロード
