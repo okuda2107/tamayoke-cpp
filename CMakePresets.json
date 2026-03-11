@@ -22,6 +22,10 @@
                 "RAPIDJSON_INCLUDE_DIR": "${sourceDir}/exlibs/rapidjson/include/rapidjson;${sourceDir}/exlibs/rapidjson/include",
                 "SOIL_INCLUDE_DIR": "${sourceDir}/exlibs/Simple-OpenGL-Image-Library/install/include/SOIL",
                 "SOIL_LIBRARY": "${sourceDir}/exlibs/Simple-OpenGL-Image-Library/install/lib/libSOIL.a",
+                "OpenCV_DIR": "${sourceDir}/exlibs/opencv-4.13.0/install/x64/mingw/lib",
+                "ONNX_INCLUDE_DIR": "${sourceDir}/exlibs/onnxruntime-win-x64-1.24.3/include",
+                "ONNX_LIBRARY": "${sourceDir}/exlibs/onnxruntime-win-x64-1.24.3/lib/onnxruntime.lib",
+                "ONNX_DLL": "${sourceDir}/exlibs/onnxruntime-win-x64-1.24.3/lib/onnxruntime.dll",
                 "DLL_FILES": "C:/msys64/mingw64/bin/libwinpthread-1.dll"
             }
         },
@@ -46,6 +50,10 @@
                 "RAPIDJSON_INCLUDE_DIR": "${sourceDir}/exlibs/rapidjson/include/rapidjson;${sourceDir}/exlibs/rapidjson/include",
                 "SOIL_INCLUDE_DIR": "${sourceDir}/exlibs/Simple-OpenGL-Image-Library/install/include/SOIL",
                 "SOIL_LIBRARY": "${sourceDir}/exlibs/Simple-OpenGL-Image-Library/install/lib/libSOIL.a",
+                "OpenCV_DIR": "${sourceDir}/exlibs/opencv-4.13.0/install/x64/mingw/lib",
+                "ONNX_INCLUDE_DIR": "${sourceDir}/exlibs/onnxruntime-win-x64-1.24.3/include",
+                "ONNX_LIBRARY": "${sourceDir}/exlibs/onnxruntime-win-x64-1.24.3/lib/onnxruntime.lib",
+                "ONNX_DLL": "${sourceDir}/exlibs/onnxruntime-win-x64-1.24.3/lib/onnxruntime.dll",
                 "DLL_FILES": "C:/msys64/mingw64/bin/libwinpthread-1.dll",
                 "CMAKE_BUILD_TYPE": "Release"
             }

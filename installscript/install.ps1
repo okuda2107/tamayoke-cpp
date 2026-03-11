@@ -92,13 +92,16 @@ if( -not (Test-Path (Join-Path $ExlibsDir "onnxruntime-win-x64-1.24.3"))) {
     Download-Lib "https://github.com/microsoft/onnxruntime/releases/download/v1.24.3/onnxruntime-win-x64-1.24.3.zip" $ExlibsDir
 }
 
-if( -not (Test-Path (Join-Path $ExlibsDir "opencv"))) {
-    $opencvUrl = "https://github.com/opencv/opencv/releases/download/4.13.0/opencv-4.13.0-windows.exe"
-    $outFile = "$env:TEMP\opencv-installer.exe"
-
-    Invoke-WebRequest $opencvUrl -OutFile $outFile
-    Start-Process `
-        -FilePath $outFile `
-        -ArgumentList "-o$ExlibsDir", "-y" `
-        -Wait
+if( -not (Test-Path (Join-Path $ExlibsDir "opencv-4.13.0"))) {
+    $TmpDir = $(Join-Path $ExlibsDir "opencv-4.13.0")
+    Download-Lib "https://github.com/opencv/opencv/archive/refs/tags/4.13.0.zip" $ExlibsDir
+    cmake -S $TmpDir -B $(Join-Path $TmpDir "build") -G "MinGW Makefiles" `
+        -DCMAKE_BUILD_TYPE=Release `
+        -DBUILD_LIST="core,imgproc,highgui,videoio" `
+        -DCMAKE_INSTALL_PREFIX=$(Join-Path $TmpDir "install") `
+        -DBUILD_TESTS=OFF `
+        -DBUILD_PERF_TESTS=OFF `
+        -DBUILD_EXAMPLES=OFF
+    cmake --build $(Join-Path $TmpDir "build") -j 8
+    cmake --install $(Join-Path $TmpDir "build") --prefix $(Join-Path $TmpDir "install")
 }

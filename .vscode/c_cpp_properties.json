@@ -36,7 +36,7 @@
                 "${workspaceFolder}/demo",
                 "${workspaceFolder}/exlibs/openal-soft-1.24.3-bin/include/AL",
                 "${workspaceFolder}/exlibs/onnxruntime-win-x64-1.24.3/include",
-                "${workspaceFolder}/exlibs/opencv/build/include"
+                "${workspaceFolder}/exlibs/opencv-4.13.0/install/include"
             ],
             "defines": [],
             "compilerPath": "C:/msys64/mingw64/bin/g++.exe",

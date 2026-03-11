@@ -20,6 +20,7 @@ find_package(SDL2_net REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(OpenCV REQUIRED)
 
 target_sources(engine
     PRIVATE
@@ -52,6 +53,7 @@ target_link_libraries(engine
         SDL2_ttf::SDL2_ttf
         SDL2_net::SDL2_net
         GLEW::glew
+        ${OpenCV_LIBS}
 )
 
 # OpenAL
@@ -129,4 +131,20 @@ if (SOIL_INCLUDE_DIR AND SOIL_LIBRARY)
     )
 else()
     message(WARNING "not set SOIL_INCLUDE_PATH, or _LIBRARY")
+endif()
+
+# ONNX Runtime
+if (ONNX_INCLUDE_DIR AND ONNX_LIBRARY AND ONNX_DLL)
+    add_library(onnxruntime SHARED IMPORTED)
+
+    set_target_properties(onnxruntime PROPERTIES
+        IMPORTED_LOCATION ${ONNX_DLL}
+        IMPORTED_IMPLIB ${ONNX_LIBRARY}
+        INTERFACE_INCLUDE_DIRECTORIES ${ONNX_INCLUDE_DIR}
+    )
+
+    target_link_libraries(engine PUBLIC onnxruntime)
+
+else()
+    message(WARNING "not set ONNX_INCLUDE_DIR, or _LIBRARY, or _DLL")
 endif()
