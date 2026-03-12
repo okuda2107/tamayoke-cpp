@@ -8,6 +8,13 @@
 
 // ゲーム内部でActor, UI, Scene, ActorQueryを持つことを定義するクラス
 // Updateを実装する際に，GameImplBase::Update()処理を差し込む必要がある
+/*
+    型指定:
+    InputState: 入力システムから送られてくる情報を格納する
+    RenderData: 描画システムに送る情報を格納する
+    GameData: ゲームを更新した際に結果を外部に伝達したいときのコンテナ
+    GameMetrics: ゲームを更新する際に必要な外部情報を格納する
+*/
 template <typename InputState, typename RenderData, typename GameData,
           typename GameMetrics>
 class GameImplBase
