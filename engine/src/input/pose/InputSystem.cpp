@@ -32,6 +32,7 @@ InputSystem::~InputSystem() {
     delete mSession;
     // カメラの終了処理
     if (mCamera.isOpened()) mCamera.release();
+    SDL_QuitSubSystem(SDL_INIT_EVENTS);
 }
 
 bool InputSystem::Initialize(int cameraNum) {
