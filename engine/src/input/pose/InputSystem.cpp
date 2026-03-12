@@ -1,5 +1,7 @@
 #include "input/pose/InputSystem.h"
 
+#include "SDL.h"
+
 namespace pose {
 InputSystem::InputSystem(float screenWidth, float screenHeight)
     : mScreenWidth(screenWidth), mScreenHeight(screenHeight) {
@@ -21,7 +23,7 @@ InputSystem::InputSystem(float screenWidth, float screenHeight)
     Ort::MemoryInfo inputTensorMemoryInfo =
         Ort::MemoryInfo::CreateCpu(OrtDeviceAllocator, OrtMemTypeDefault);
 
-    Ort::Value inputTensor = Ort::Value::CreateTensor<float>(
+    mInputTensor = Ort::Value::CreateTensor<float>(
         inputTensorMemoryInfo, mInputTensorBuf.data(), mInputTensorBuf.size(),
         inputTensorFormat.data(), inputTensorFormat.size());
 }
@@ -29,16 +31,24 @@ InputSystem::InputSystem(float screenWidth, float screenHeight)
 InputSystem::~InputSystem() {
     delete mSession;
     // カメラの終了処理
+    if (mCamera.isOpened()) mCamera.release();
 }
 
-bool InputSystem::Initialize() {
+bool InputSystem::Initialize(int cameraNum) {
     // カメラの初期化
+    mCamera.open(cameraNum);
+    if (!mCamera.isOpened()) {
+        SDL_Log("failed to open camera\n");
+        return false;
+    }
     return true;
 }
 
 void InputSystem::Update() {
     // カメラから画像を取得
     cv::Mat input;
+    mCamera >> input;
+    if (input.empty()) return;
 
     cv::Mat resizedImg;
     formatImage(input, resizedImg);
@@ -90,15 +100,19 @@ void InputSystem::Update() {
 
     int stride = 57;
     // 人物検出
+    float detectionConf = -1.0f;
     for (int i = 0; i < 300; i++) {
         // しきい値
         if (output[i * stride + 4] < detectionConfThreshold) continue;
+        // confidenceが最も高い人物検出を採用
+        if (detectionConf >= output[i * stride + 4]) continue;
+        detectionConf = output[i * stride + 4];
         for (int k = 0; k < 17; k++) {
             float kx = output[i * stride + 6 + k * 3 + 0];
             float ky = output[i * stride + 6 + k * 3 + 1];
             float kc = output[i * stride + 6 + k * 3 + 2];
 
-            if (mState.keypoints[i].confidence > kc) continue;
+            if (mState.keypoints[k].confidence > kc) continue;
 
             // 出力スクリーンの幅と高さを見て，640を小さい方の辺にするscaleを求める
             float minEdge = std::min(mScreenWidth, mScreenHeight);
@@ -111,8 +125,9 @@ void InputSystem::Update() {
             float bufX = mScreenWidth - inputSize * scale;
             float bufY = mScreenHeight - inputSize * scale;
 
-            mState.keypoints[i].x = fixX + bufX / 2;
-            mState.keypoints[i].y = fixY + bufY / 2;
+            mState.keypoints[k].x = fixX + bufX / 2;
+            mState.keypoints[k].y = fixY + bufY / 2;
+            mState.keypoints[k].confidence = kc;
         }
     }
 }

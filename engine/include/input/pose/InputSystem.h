@@ -46,7 +46,7 @@ class InputSystem
     InputSystem(float screenWidth, float screenHeight);
     ~InputSystem();
 
-    bool Initialize();
+    bool Initialize(int cameraNum);
 
     void Update();
 
