@@ -10,7 +10,7 @@ ActorsSystem::ActorsSystem() : mUpdatingActors(false), mID(0) {}
 
 ActorsSystem::~ActorsSystem() { UnloadObjects(); }
 
-void ActorsSystem::ProcessInput(const InputState& state) {
+void ActorsSystem::ProcessInput(const InputStateBase& state) {
     mUpdatingActors = true;
     for (auto actor : mActors) {
         actor->ProcessInput(state);

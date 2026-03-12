@@ -22,7 +22,7 @@ class Component {
     Component(class Actor* owner, int updateOrder = 100);
     virtual ~Component();
 
-    virtual void ProcessInput(const class InputState& keystate) {}
+    virtual void IProcessInput(const class InputStateBase& state) {};
 
     virtual void Update(float deltatime) {};
 

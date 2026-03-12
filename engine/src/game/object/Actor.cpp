@@ -20,12 +20,12 @@ Actor::~Actor() {
     while (!mComponents.empty()) delete mComponents.back();
 }
 
-void Actor::ProcessInput(const InputState& state) {
+void Actor::ProcessInput(const InputStateBase& state) {
     if (mState == State::EActive) {
         for (auto comp : mComponents) {
-            comp->ProcessInput(state);
+            comp->IProcessInput(state);
         }
-        ActorInput(state);
+        IActorInput(state);
     }
 }
 

@@ -39,14 +39,14 @@ class Actor : public ObjectBase {
     std::vector<class Component*> mComponents;
 
    protected:
-    virtual void ActorInput(const struct InputState& state) {};
+    virtual void IActorInput(const struct InputStateBase& state) {};
     virtual void UpdateActor(float deltatime) {};
 
    public:
     Actor(class ActorsSystem* system, ActorDeps deps);
     virtual ~Actor();
 
-    void ProcessInput(const struct InputState& state);
+    void ProcessInput(const struct InputStateBase& state);
     void Update(float deltatime) override;
 
     Vector3 GetPosition() { return mPosition; }

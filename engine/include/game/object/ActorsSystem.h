@@ -30,7 +30,7 @@ class ActorsSystem : public ObjectsSystemBase<class InputState> {
     ActorsSystem();
     ~ActorsSystem() override;
 
-    void ProcessInput(const InputState& state);
+    void ProcessInput(const InputStateBase& state);
     void UpdateObjects(float deltatime);
 
     // Actorが死んでいたり，IDに合致する該当する具体クラスが無ければnullptrを返す．
