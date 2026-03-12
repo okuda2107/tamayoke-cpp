@@ -23,19 +23,22 @@ int main(int argc, char** argv) {
 
     // Tensorバッファ
     std::vector<float> inputTensorValues(inputSize * inputSize * 3);
+    Ort::Value inputTensor;
 
-    // 入力Tensor形状の情報
-    // {batch, channels, height, width}
-    std::array<int64_t, 4> inputShape{1, 3, inputSize, inputSize};
+    {
+        // 入力Tensor形状の情報
+        // {batch, channels, height, width}
+        std::array<int64_t, 4> inputShape{1, 3, inputSize, inputSize};
 
-    // MemoryInfoはそのメモリの使い方を指定する．どのデバイスのメモリにあるか，どのアロケータで管理されているかを指定するモノ．メモリ属性の識別子
-    // allocatorはメモリを確保，解放などの管理を行う仕組み
-    Ort::MemoryInfo memoryInfo =
-        Ort::MemoryInfo::CreateCpu(OrtDeviceAllocator, OrtMemTypeDefault);
-    // Tensor作成
-    Ort::Value inputTensor = Ort::Value::CreateTensor<float>(
-        memoryInfo, inputTensorValues.data(), inputTensorValues.size(),
-        inputShape.data(), inputShape.size());
+        // MemoryInfoはそのメモリの使い方を指定する．どのデバイスのメモリにあるか，どのアロケータで管理されているかを指定するモノ．メモリ属性の識別子
+        // allocatorはメモリを確保，解放などの管理を行う仕組み
+        Ort::MemoryInfo memoryInfo =
+            Ort::MemoryInfo::CreateCpu(OrtDeviceAllocator, OrtMemTypeDefault);
+        // Tensor作成
+        inputTensor = Ort::Value::CreateTensor<float>(
+            memoryInfo, inputTensorValues.data(), inputTensorValues.size(),
+            inputShape.data(), inputShape.size());
+    }
 
     // 入出力名 ONNX graphのnode名
     const char* inputNames[] = {"images"};
