@@ -1,7 +1,8 @@
 #pragma once
 #include "SDL.h"
 #include "game/camera/FPSComponent.h"
-#include "game/object/Actor.h"
+#include "game/object/IActor.h"
+#include "input/InputState.h"
 
 struct FPSActorDeps : ActorDeps {
     class RenderDB& renderDB;
@@ -12,7 +13,7 @@ struct FPSActorDeps : ActorDeps {
 };
 
 //  キーマウでの操作ができるFPS視点のActor
-class FPSActor : public Actor {
+class FPSActor : public IActor<InputState> {
     class MoveComponent* mMoveComp;
     class AudioComponent* mAudioComp;
     class FPSComponent* mFPSComp;

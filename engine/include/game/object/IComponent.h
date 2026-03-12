@@ -7,6 +7,8 @@ class IComponent : public Component {
                   "InputState must derive from InputStateBase");
 
    public:
+    IComponent(class Actor* owner, int updateOrder = 100)
+        : Component(owner, updateOrder) {};
     virtual void ProcessInput(const T& state) = 0;
     void IProcessInput(const InputStateBase& state) final {
         ProcessInput(static_cast<T>(state));

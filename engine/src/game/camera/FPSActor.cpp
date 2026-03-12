@@ -7,7 +7,7 @@
 #include "input/InputState.h"
 
 FPSActor::FPSActor(class ActorsSystem* system, FPSActorDeps fad)
-    : Actor(system, fad), mForwardSpeed(0.0f), mStrafeSpeed(0.0f) {
+    : IActor(system, fad), mForwardSpeed(0.0f), mStrafeSpeed(0.0f) {
     mMoveComp = new MoveComponent(this);
     mAudioComp = new AudioComponent(this, AudioCompDeps(fad.audioSystem));
     mLastFootstep = 0.0f;

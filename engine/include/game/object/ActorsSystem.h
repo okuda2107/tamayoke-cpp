@@ -5,14 +5,14 @@
 #include <unordered_map>
 #include <vector>
 
-#include "base/ObjectsSystemBase.h"
+#include "game/base/GameSystemBase.h"
 
 // Actorを貸し出すときに発行するモノ
 // 外部システムはこれを所有し，Actorを借用するときにActorSystemに問いかける
 typedef uint32_t ActorID;
 
 // Actorの配列を保持し，それらのupdateを保証する
-class ActorsSystem : public ObjectsSystemBase<class InputState> {
+class ActorsSystem : public GameSystemBase {
     std::vector<class Actor*> mActors;
     std::vector<class Actor*> mPendingActors;
 
@@ -21,7 +21,7 @@ class ActorsSystem : public ObjectsSystemBase<class InputState> {
 
     bool mUpdatingActors;
 
-    void UnloadObjects() override;
+    void UnloadObjects();
 
     // 次にmLendingMapに登録するIDの値の候補
     ActorID mID;
@@ -30,7 +30,7 @@ class ActorsSystem : public ObjectsSystemBase<class InputState> {
     ActorsSystem();
     ~ActorsSystem() override;
 
-    void ProcessInput(const InputStateBase& state);
+    void ProcessInput(const struct InputStateBase& state);
     void UpdateObjects(float deltatime);
 
     // Actorが死んでいたり，IDに合致する該当する具体クラスが無ければnullptrを返す．
