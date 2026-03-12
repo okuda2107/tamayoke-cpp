@@ -1,7 +1,8 @@
 #include "input/pose/InputSystem.h"
 
 namespace pose {
-InputSystem::InputSystem() {
+InputSystem::InputSystem(float screenWidth, float screenHeight)
+    : mScreenWidth(screenWidth), mScreenHeight(screenHeight) {
     // 実行環境設定の指定，modelのロード
     mEnv = Ort::Env(ORT_LOGGING_LEVEL_WARNING, "pose");
     mSessionOptions.SetIntraOpNumThreads(1);
@@ -81,6 +82,39 @@ void InputSystem::Update() {
             16 right_ankle
     */
     float* output = outputTensors[0].GetTensorMutableData<float>();
+
+    // 出力を格納
+
+    // 入力をclear
+    for (auto& k : mState.keypoints) k = Keypoint::Zero;
+
+    int stride = 57;
+    // 人物検出
+    for (int i = 0; i < 300; i++) {
+        // しきい値
+        if (output[i * stride + 4] < detectionConfThreshold) continue;
+        for (int k = 0; k < 17; k++) {
+            float kx = output[i * stride + 6 + k * 3 + 0];
+            float ky = output[i * stride + 6 + k * 3 + 1];
+            float kc = output[i * stride + 6 + k * 3 + 2];
+
+            if (mState.keypoints[i].confidence > kc) continue;
+
+            // 出力スクリーンの幅と高さを見て，640を小さい方の辺にするscaleを求める
+            float minEdge = std::min(mScreenWidth, mScreenHeight);
+            float scale = minEdge / inputSize;
+
+            float fixX = kx * scale;
+            float fixY = ky * scale;
+
+            // screen上の640 * scale x 640 * scaleの矩形が画面の中心になるようにbufferingを行う
+            float bufX = mScreenWidth - inputSize * scale;
+            float bufY = mScreenHeight - inputSize * scale;
+
+            mState.keypoints[i].x = fixX + bufX / 2;
+            mState.keypoints[i].y = fixY + bufY / 2;
+        }
+    }
 }
 
 void InputSystem::formatImage(cv::Mat& input, cv::Mat& out) {

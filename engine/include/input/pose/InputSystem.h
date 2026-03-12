@@ -1,17 +1,29 @@
 #pragma once
 #include "../base/InputSystemBase.h"
+#include "InputState.h"
 #include "onnxruntime_cxx_api.h"
 #include "opencv2/opencv.hpp"
+#include "runtime/base/MetricsBase.h"
 
 namespace pose {
 class InputSystem
-    : public InputSystemBase<pose::InputSystem, InputSystemMetricsBase> {
+    : public InputSystemBase<pose::InputState, InputSystemMetricsBase> {
+    // modelデータのpath
     static constexpr std::wstring_view modelFIlepath =
         L"Assets/AImodel/yolo26n-pose.onnx";
+    // modelが期待する正方形画像サイズの1辺の長さ
     static const int inputSize = 640;
 
+    // onnx上でのmodelの入出力名
     static constexpr char* inputNames[] = {"image"};
-    static constexpr char* outputNames[] = {"output0"};
+    static constexpr char* outputNames[] = {"output"};
+
+    // 推定結果のしきい値
+    static constexpr float detectionConfThreshold = 0.25f;
+
+    // マッピングするScreen Size
+    float mScreenWidth;
+    float mScreenHeight;
 
     cv::VideoCapture mCamera;
     Ort::Env mEnv;
@@ -22,6 +34,7 @@ class InputSystem
     Ort::Value mInputTensor;
 
     // 入力を処理するヘルパー関数群
+
     // YOLOの入力フォーマットに合わせるため，640x640のサイズにletterbox処理を行う
     void formatImage(cv::Mat& input, cv::Mat& out);
 
@@ -30,7 +43,7 @@ class InputSystem
                      std::array<float, inputSize * inputSize * 3>& out);
 
    public:
-    InputSystem();
+    InputSystem(float screenWidth, float screenHeight);
     ~InputSystem();
 
     bool Initialize();
