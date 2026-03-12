@@ -38,5 +38,9 @@ struct InputState : InputStateBase {
     static constexpr int KEYPOINT_RIGHT_ANKLE = 16;
 
     std::array<Keypoint, KEYPOINT_COUNT> keypoints;
+
+    // ゲームをやめるときに必要
+    // 現段階ではEscを押されたとき or SDL_QUIT イベントが発生したときtrue
+    bool isQuitGame = false;
 };
 }  // namespace pose

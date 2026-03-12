@@ -41,6 +41,12 @@ bool InputSystem::Initialize(int cameraNum) {
         SDL_Log("failed to open camera\n");
         return false;
     }
+
+    // event受信システムを初期化
+    if (SDL_InitSubSystem(SDL_INIT_EVENTS) != 0) {
+        SDL_Log("failed to initialize SDL_EVENTS");
+        return false;
+    }
     return true;
 }
 
@@ -129,6 +135,21 @@ void InputSystem::Update() {
             mState.keypoints[k].y = fixY + bufY / 2;
             mState.keypoints[k].confidence = kc;
         }
+    }
+
+    // Escキーが押されたかをチェック
+    mState.isQuitGame = false;
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_QUIT:
+                mState.isQuitGame = true;
+                break;
+            default:
+                break;
+        }
+        if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
+            mState.isQuitGame = true;
     }
 }
 
