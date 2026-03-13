@@ -1,51 +1,35 @@
 #pragma once
-#include <type_traits>
+#include "game/UI/UISystem.h"
+#include "game/object/ActorsSystem.h"
+#include "game/scene/ActorQuery.h"
+#include "game/scene/Scene.h"
+#include "game/scene/SceneManager.h"
 
-#include "GameSystemVector.h"
-#include "IGame.h"
-
-// ゲームの内部での処理定義を責務とする
-template <typename InputState, typename RenderData, typename GameData,
-          typename GameMetrics>
-class GameBase : public IGame {
-    static_assert(std::is_base_of<InputStateBase, InputState>::value,
-                  "InputState must derive from InputStateBase");
-
-    static_assert(std::is_base_of<RenderDataBase, RenderData>::value,
-                  "RenderData must derive from RenderDataBase");
-
-    static_assert(std::is_base_of<GameDataBase, GameData>::value,
-                  "GameData must derive from GameDataBase");
-
-    static_assert(std::is_base_of<GameMetricsBase, GameMetrics>::value,
-                  "GameMetrics must derive from GameMetricsBase");
-
+// ゲーム内部でActor, UI, Scene, ActorQueryを持つことを定義するクラス
+// Updateを実装する際に，GameImplBase::Update()処理を差し込む必要がある
+class GameBase {
    protected:
-    // ゲームで用いられるサブシステムを抽象化して持っておく
     GameSystemVector mSystems;
+    class SceneManager* mSceneManager;
+    class ActorQuery* mActorQuery;
 
    public:
-    GameBase() = default;
-    virtual ~GameBase() = default;
+    GameBase();
+    virtual ~GameBase();
 
-    // 入力を処理
-    virtual void ProcessInput(const InputState& state) = 0;
-    // deltatimeに基づいてgameを更新する
-    // GameDataは更新結果を外部に伝達したいときのコンテナ
-    virtual const GameData& Update(float deltatime,
-                                   const GameMetrics& metrics) = 0;
-    // gameの出力を生成
-    virtual const RenderData& GenerateRenderData() = 0;
+    template <typename TScene>
+    bool SetScene(const std::string& tag) {
+        static_assert(std::is_base_of<Scene, TScene>::value,
+                      "TScene must derive from Scene");
+        TScene* scene = new TScene();
+        scene->SetActorQuery(mActorQuery);
+        scene->SetDataRef(&mSceneManager->mData);
+        return mSceneManager->SetScene(tag, scene);
+    }
 
-    // Engineで使われるためのエントリポイント
-    void IProcessInput(const struct InputStateBase& state) final {
-        ProcessInput(static_cast<const InputState&>(state));
+    bool SetEntryScene(const std::string& tag) {
+        return mSceneManager->SetEntryScene(tag);
     }
-    const struct GameDataBase& IUpdate(
-        float deltatime, const struct GameMetricsBase& metrics) final {
-        return Update(deltatime, static_cast<const GameMetrics&>(metrics));
-    }
-    const struct RenderDataBase& IGenerateRenderData() final {
-        return GenerateRenderData();
-    }
+
+    class ActorQuery* GetActorQuery() { return mActorQuery; }
 };

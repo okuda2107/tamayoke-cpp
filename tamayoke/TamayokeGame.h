@@ -1,20 +1,16 @@
 #pragma once
-#include "game/base/GameImplBase.h"
+#include "game/base/InputProcessor.h"
 #include "input/pose/InputState.h"
 #include "renderer/RenderData.h"
 
-class TamayokeGame : public GameImplBase<pose::InputState, RenderData,
-                                         GameFrameResult, GameMetricsBase> {
-    GameFrameResult mFrameResult;
+class TamayokeGame : public InputProcessor<pose::InputState> {
+    class Game* mGame;
 
    public:
     TamayokeGame();
-    virtual ~TamayokeGame() = default;
+    ~TamayokeGame();
 
     bool Initialize();
 
     void ProcessInput(const pose::InputState& state) override;
-    const struct GameFrameResult& Update(
-        float deltatime, const struct GameMetricsBase& metrics) override;
-    const struct RenderData& GenerateRenderData() override;
 };

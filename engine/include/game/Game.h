@@ -1,13 +1,18 @@
 #pragma once
 #include <type_traits>
 
-#include "base/GameImplBase.h"
+#include "base/GameBase.h"
+#include "base/InputProcessor.h"
+#include "base/RenderDataGenerator.h"
+#include "base/Updater.h"
 #include "input/InputState.h"
 #include "renderer/RenderData.h"
 #include "runtime/RuntimeData.h"
 
-class Game : public GameImplBase<InputState, RenderData, GameFrameResult,
-                                 GameMetricsBase> {
+class Game : public GameBase,
+             public InputProcessor<InputState>,
+             public Updater<GameFrameResult, GameMetricsBase>,
+             public RenderDataGenerator<RenderData> {
     GameFrameResult mFrameResult;
 
    public:

@@ -1,5 +1,4 @@
 #pragma once
-#include "game/base/GameBase.h"
 #include "game/base/IGame.h"
 #include "input/base/IInputSystem.h"
 #include "input/base/InputSystemBase.h"
@@ -29,8 +28,7 @@ class Engine {
     */
     template <typename InputState, typename RenderData, typename GameData,
               typename Metrics>
-    Engine(class GameBase<InputState, RenderData, GameData,
-                          typename Metrics::Game>* game,
+    Engine(class IGame* game,
            class InputSystemBase<InputState, typename Metrics::InputSystem>*
                inputSystem,
            class RendererBase<RenderData>* renderer,

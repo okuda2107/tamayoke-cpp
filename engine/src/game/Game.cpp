@@ -72,13 +72,13 @@ void Game::ProcessInput(const InputState& state) {
 
 const GameFrameResult& Game::Update(float deltatime,
                                     const struct GameMetricsBase& metrics) {
-    GameImplBase::Update();
     mSystems.GetSystem<AudioSystem>()->Update(deltatime);
     mSystems.GetSystem<ActorsSystem>()->UpdateObjects(deltatime);
     mSystems.GetSystem<UISystem>()->Update(deltatime);
     mFrameResult.mRelativeMouseMode =
         mSystems.GetSystem<RuntimeRequestManager>()
             ->mInputSystemMetricsRequest.mRelativeMouseMode;
+    mSceneManager->Update();
     return mFrameResult;
 }
 
