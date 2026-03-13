@@ -23,7 +23,7 @@ struct RenderConfig {
 };
 
 class Renderer : public RendererBase<RenderData> {
-   private:
+   protected:
     class Shader* mSpriteShader;
     class VertexArray* mSpriteVerts;
 
@@ -63,6 +63,7 @@ class Renderer : public RendererBase<RenderData> {
                     std::string windowTitle, bool isFullScreen);
 
     // フレームの描画
+    void DrawScene(const struct RenderData& data);
     void Draw(const struct RenderData& data);
 
     // SDL_Windowは不完全型

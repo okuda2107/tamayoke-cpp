@@ -131,7 +131,7 @@ void Renderer::Shutdown() {
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
-void Renderer::Draw(const RenderData& data) {
+void Renderer::DrawScene(const RenderData& data) {
     glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -207,6 +207,10 @@ void Renderer::Draw(const RenderData& data) {
             ui->Draw(mSpriteShader);
         }
     }
+}
+
+void Renderer::Draw(const RenderData& data) {
+    DrawScene(data);
 
     SDL_GL_SwapWindow(mWindow);
 }
