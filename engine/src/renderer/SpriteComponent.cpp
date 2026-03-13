@@ -7,6 +7,12 @@
 #include "renderer/Shader.h"
 #include "renderer/Texture.h"
 
+/*
+    座標系:
+    screenの中心が{0, 0}
+    screenの左下が{-width / 2, -height / 2}
+    screenの右上が{width / 2, height / 2}
+*/
 SpriteComponent::SpriteComponent(class Actor* owner, RenderDB* database,
                                  int drawOrder)
     : Component(owner),

@@ -15,7 +15,7 @@ class TamayokeGame : public GameBase,
     GameFrameResult mFrameResult;
 
    public:
-    TamayokeGame();
+    TamayokeGame(class ConfigDB& db);
     virtual ~TamayokeGame() = default;
 
     bool Initialize();

@@ -6,6 +6,10 @@
 #include "renderer/SpriteComponent.h"
 
 Logo::Logo(class ActorsSystem* system, LogoDeps& deps) : Actor(system, deps) {
+    // 位置調整
+    SetScale(0.4);
+    SetPosition(Vector3(0, 200, 0));
+
     // ロゴを出す
     mSpriteComp = new SpriteComponent(this, &deps.renderDB);
     mSpriteComp->SetTexture(deps.renderDB.GetTexture("Assets/title.png"));

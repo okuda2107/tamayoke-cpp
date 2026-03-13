@@ -1,5 +1,6 @@
 #include "TamayokeGame.h"
 
+#include "ConfigDB.h"
 #include "SDL.h"
 #include "game/Game.h"
 #include "game/RuntimeRequestManager.h"
@@ -10,7 +11,7 @@
 #include "renderer/RenderDB.h"
 #include "renderer/RenderData.h"
 
-TamayokeGame::TamayokeGame() {
+TamayokeGame::TamayokeGame(class ConfigDB& configDB) {
     auto renderDB = new RenderDB();
     auto audioSystem = new AudioSystem();
     auto physWorld = new PhysWorld();
@@ -22,6 +23,7 @@ TamayokeGame::TamayokeGame() {
     mSystems.AddSystem(physWorld);
     mSystems.AddSystem(stateManager);
     mSystems.AddSystem(reqManager);
+    mSystems.AddSystem(&configDB);
 
     mFrameResult.mIsGameLoop = true;
 }
