@@ -14,7 +14,7 @@ project(prj CXX)
 add_subdirectory("engine")
 # add_subdirectory("engine_temp")
 
-add_subdirectory("demo")
+add_subdirectory("tamayoke")
 
 # engineができてない状態でもtestしたいため，一旦コメントアウト
 # todo: ルートからコマンドを叩いて，テストを行いたい．

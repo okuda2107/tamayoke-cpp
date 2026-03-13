@@ -24,4 +24,7 @@ class TamayokeGame : public GameBase,
     const struct GameFrameResult& Update(
         float deltatime, const struct GameMetricsBase& metrics) override;
     const struct RenderData& GenerateRenderData() override;
+
+    // AudioSystemにbankデータを流し込む
+    void LoadAudioBank(const std::string& name);
 };

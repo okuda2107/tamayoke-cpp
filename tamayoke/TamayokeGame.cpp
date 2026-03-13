@@ -67,3 +67,7 @@ const RenderData& Game::GenerateRenderData() {
     auto renderDB = mSystems.GetSystem<RenderDB>();
     return renderDB->GetData();
 }
+
+void TamayokeGame::LoadAudioBank(const std::string& name) {
+    mSystems.GetSystem<AudioSystem>()->LoadBank(name);
+}
