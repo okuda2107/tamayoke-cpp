@@ -121,9 +121,9 @@ void InputSystem::Update() {
 
             if (mState.keypoints[k].confidence > kc) continue;
 
-            // 出力スクリーンの幅と高さを見て，640を小さい方の辺にするscaleを求める
-            float minEdge = std::min(mScreenWidth, mScreenHeight);
-            float scale = minEdge / inputSize;
+            // 出力スクリーンの幅と高さを見て，640を大きい方の辺にするscaleを求める
+            float maxEdge = std::max(mScreenWidth, mScreenHeight);
+            float scale = maxEdge / inputSize;
 
             float fixX = kx * scale;
             float fixY = ky * scale;

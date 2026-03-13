@@ -3,11 +3,11 @@
 #include "InputState.h"
 #include "onnxruntime_cxx_api.h"
 #include "opencv2/opencv.hpp"
-#include "runtime/base/MetricsBase.h"
+#include "runtime/RuntimeData.h"
 
 namespace pose {
 class InputSystem
-    : public InputSystemBase<pose::InputState, InputSystemMetricsBase> {
+    : public InputSystemBase<pose::InputState, InputSystemMetrics> {
     // modelデータのpath
     static constexpr std::wstring_view modelFIlepath =
         L"Assets/AImodel/yolo26n-pose.onnx";
@@ -15,8 +15,8 @@ class InputSystem
     static const int inputSize = 640;
 
     // onnx上でのmodelの入出力名
-    static constexpr char* inputNames[] = {"image"};
-    static constexpr char* outputNames[] = {"output"};
+    static constexpr char* inputNames[] = {"images"};
+    static constexpr char* outputNames[] = {"output0"};
 
     // 推定結果のしきい値
     static constexpr float detectionConfThreshold = 0.25f;
@@ -50,6 +50,6 @@ class InputSystem
 
     void Update();
 
-    void ProcessMetrics(const InputSystemMetricsBase& metrics) {}
+    void ProcessMetrics(const InputSystemMetrics& metrics) {}
 };
 }  // namespace pose

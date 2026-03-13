@@ -1,8 +1,8 @@
 #pragma once
-#include "base/GameBase.h"
-#include "base/RenderDataGenerator.h"
-#include "base/Updater.h"
+#include "game/base/GameBase.h"
 #include "game/base/InputProcessor.h"
+#include "game/base/RenderDataGenerator.h"
+#include "game/base/Updater.h"
 #include "input/pose/InputState.h"
 #include "renderer/RenderData.h"
 #include "runtime/RuntimeData.h"

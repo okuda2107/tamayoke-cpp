@@ -10,7 +10,7 @@ void IGame::IProcessInput(const struct InputStateBase& state) {
 
 const struct GameDataBase& IGame::IUpdate(
     float deltatime, const struct GameMetricsBase& metrics) {
-    update->IUpdate(deltatime, metrics);
+    return update->IUpdate(deltatime, metrics);
 }
 
 const struct RenderDataBase& IGame::IGenerateRenderData() {

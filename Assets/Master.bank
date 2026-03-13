@@ -4,7 +4,7 @@
     "events": [
         {
             "id": "title",
-            "file": "Assets/takibi.mp3",
+            "file": "Assets/title.mp3",
             "is3D": false,
             "stream": false,
             "loop": true,
@@ -13,10 +13,28 @@
         },
         {
             "id": "game",
-            "file": "Assets/mac.mp3",
+            "file": "Assets/game.mp3",
             "is3D": false,
             "stream": false,
             "loop": true,
+            "volume": 1.0,
+            "pitch": 1.0
+        },
+        {
+            "id": "pop",
+            "file": "Assets/pop.wav",
+            "is3D": false,
+            "stream": false,
+            "loop": false,
+            "volume": 1.0,
+            "pitch": 1.0
+        },
+        {
+            "id": "error",
+            "file": "Assets/error.wav",
+            "is3D": false,
+            "stream": false,
+            "loop": false,
             "volume": 1.0,
             "pitch": 1.0
         }

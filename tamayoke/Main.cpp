@@ -1,12 +1,15 @@
 #include "Engine.h"
 #include "SDL.h"
 #include "TamayokeGame.h"
+#include "game/base/IGame.h"
 #include "game/object/ActorsSystem.h"
 #include "input/pose/InputSystem.h"
 #include "renderer/Renderer.h"
 #include "runtime/RuntimeSystem.h"
+#include "scene/SceneTag.h"
+#include "scene/Title.h"
 
-int main() {
+int main(int argc, char** argv) {
     // 設定値
     int cameraNum = 1;
     float screenW = 1024.0f;
@@ -27,6 +30,10 @@ int main() {
         game = new TamayokeGame();
         if (!game->Initialize())
             throw std::runtime_error("Failed to initialize game");
+        IGame* igame = new IGame();
+        igame->input = game;
+        igame->update = game;
+        igame->render = game;
 
         // renderer
         renderer = new Renderer();
@@ -41,6 +48,16 @@ int main() {
         // Load Object
         // Load Audio
         game->LoadAudioBank("Assets/Master.bank");
+
+        // Load Scene
+        game->SetScene<Title>(SceneName::title.data());
+        game->SetEntryScene(SceneName::title.data());
+
+        Engine engine(igame, inputSystem, renderer, runtimeSystem);
+
+        engine.RunLoop();
+
+        delete igame;
     } catch (const std::runtime_error& e) {
         SDL_Log(e.what());
     }

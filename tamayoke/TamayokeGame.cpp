@@ -55,15 +55,15 @@ void TamayokeGame::ProcessInput(const pose::InputState& state) {
     mSystems.GetSystem<ActorsSystem>()->ProcessInput(state);
 }
 
-const GameFrameResult& Game::Update(float deltatime,
-                                    const struct GameMetricsBase& metrics) {
+const GameFrameResult& TamayokeGame::Update(
+    float deltatime, const struct GameMetricsBase& metrics) {
     mSystems.GetSystem<AudioSystem>()->Update(deltatime);
     mSystems.GetSystem<ActorsSystem>()->UpdateObjects(deltatime);
     mSceneManager->Update();
     return mFrameResult;
 }
 
-const RenderData& Game::GenerateRenderData() {
+const RenderData& TamayokeGame::GenerateRenderData() {
     auto renderDB = mSystems.GetSystem<RenderDB>();
     return renderDB->GetData();
 }
