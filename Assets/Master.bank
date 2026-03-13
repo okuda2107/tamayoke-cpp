@@ -3,18 +3,18 @@
     "version": 1,
     "events": [
         {
-            "id": "takibi",
+            "id": "title",
             "file": "Assets/takibi.mp3",
-            "is3D": true,
+            "is3D": false,
             "stream": false,
             "loop": true,
             "volume": 1.0,
             "pitch": 1.0
         },
         {
-            "id": "bgm_main",
+            "id": "game",
             "file": "Assets/mac.mp3",
-            "is3D": true,
+            "is3D": false,
             "stream": false,
             "loop": true,
             "volume": 1.0,
