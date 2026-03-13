@@ -10,12 +10,60 @@
 #include "renderer/RenderDB.h"
 #include "renderer/RenderData.h"
 
-TamayokeGame::TamayokeGame() { mGame = new Game(); }
-TamayokeGame::~TamayokeGame() { delete mGame; }
+TamayokeGame::TamayokeGame() {
+    auto renderDB = new RenderDB();
+    auto audioSystem = new AudioSystem();
+    auto physWorld = new PhysWorld();
+    auto stateManager = new StateManager();
+    auto reqManager = new RuntimeRequestManager();
 
-bool TamayokeGame::Initialize() { return mGame->Initialize(); }
+    mSystems.AddSystem(renderDB);
+    mSystems.AddSystem(audioSystem);
+    mSystems.AddSystem(physWorld);
+    mSystems.AddSystem(stateManager);
+    mSystems.AddSystem(reqManager);
+
+    mFrameResult.mIsGameLoop = true;
+}
+
+bool TamayokeGame::Initialize() {
+    try {  // 初期化に失敗したら初期状態にロールバックを行う
+        if (!mSystems.GetSystem<RenderDB>()->Initialize()) {
+            throw std::runtime_error("Failed to Initialize RenderDB");
+        }
+
+        if (!mSystems.GetSystem<AudioSystem>()->Initialize()) {
+            throw std::runtime_error("Failed to initialize audio system");
+        }
+    } catch (const std::runtime_error& e) {
+        SDL_Log(e.what());
+        delete mSystems.GetSystem<RenderDB>();
+        delete mSystems.GetSystem<AudioSystem>();
+        auto renderDB = new RenderDB();
+        auto audioSystem = new AudioSystem();
+        mSystems.AddSystem(renderDB);
+        mSystems.AddSystem(audioSystem);
+
+        return false;
+    }
+
+    return true;
+}
 
 void TamayokeGame::ProcessInput(const pose::InputState& state) {
     mFrameResult.mIsGameLoop = !state.isQuitGame;
     mSystems.GetSystem<ActorsSystem>()->ProcessInput(state);
+}
+
+const GameFrameResult& Game::Update(float deltatime,
+                                    const struct GameMetricsBase& metrics) {
+    mSystems.GetSystem<AudioSystem>()->Update(deltatime);
+    mSystems.GetSystem<ActorsSystem>()->UpdateObjects(deltatime);
+    mSceneManager->Update();
+    return mFrameResult;
+}
+
+const RenderData& Game::GenerateRenderData() {
+    auto renderDB = mSystems.GetSystem<RenderDB>();
+    return renderDB->GetData();
 }
