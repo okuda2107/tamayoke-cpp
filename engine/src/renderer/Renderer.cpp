@@ -126,6 +126,12 @@ void Renderer::Shutdown() {
     delete mSpriteVerts;
     mSpriteShader->Unload();
     delete mSpriteShader;
+
+    glDeleteBuffers(1, &mLineVBO);
+    glDeleteVertexArrays(1, &mLineVAO);
+    mLineShader->Unload();
+    delete mLineShader;
+
     SDL_GL_DeleteContext(mContext);
     SDL_DestroyWindow(mWindow);
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
@@ -199,6 +205,40 @@ void Renderer::DrawScene(const RenderData& data) {
     mSpriteVerts->SetActive();
     for (auto sprite : data.mSprites) {
         sprite->Draw(mSpriteShader);
+    }
+
+    // 線，円を描画
+    if (!data.mLines.empty() || !data.mCircles.empty()) {
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
+
+        mLineShader->SetActive();
+        mLineShader->SetMatrixUniform("uViewProj", data.mView * mProjection);
+
+        glBindVertexArray(mLineVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, mLineVBO);
+
+        // -------- Lines --------
+        for (const auto& [_, line] : data.mLines) {
+            Vector3 verts[2] = {line.start, line.end};
+
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(verts), verts);
+
+            mLineShader->SetVectorUniform("fragColor", line.color);
+
+            glDrawArrays(GL_LINES, 0, 2);
+        }
+
+        // -------- Circles --------
+        for (const auto& [_, circle] : data.mCircles) {
+            glBufferSubData(GL_ARRAY_BUFFER, 0,
+                            sizeof(Vector3) * circle.verts.size(),
+                            circle.verts.data());
+
+            mLineShader->SetVectorUniform("fragColor", circle.color);
+
+            glDrawArrays(GL_LINE_LOOP, 0, circle.verts.size());
+        }
     }
 
     // Draw UI
@@ -276,6 +316,10 @@ bool Renderer::LoadShaders() {
     mProjection = Matrix4::CreatePerspectiveFOV(
         Math::ToRadians(70.0f), mScreenWidth, mScreenHeight, 25.0f, 10000.0f);
 
+    mLineShader = new Shader();
+    if (!mLineShader->Load("Shaders/Shape.vert", "Shaders/Shape.frag"))
+        return false;
+
     return true;
 }
 
@@ -290,6 +334,20 @@ void Renderer::CreateSpriteVerts() {
     unsigned int indexBuffer[] = {0, 1, 2, 2, 3, 0};
 
     mSpriteVerts = new VertexArray(vertexBuffer, 4, indexBuffer, 6);
+}
+
+void Renderer::CreateLineBuffer() {
+    glGenVertexArrays(1, &mLineVAO);
+    glGenBuffers(1, &mLineVBO);
+
+    glBindVertexArray(mLineVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, mLineVBO);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3) * 1024, nullptr,
+                 GL_DYNAMIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3), (void*)0);
 }
 
 //ShaderファイルはGLSLへの架け橋の役目，光のセットアップを書いてしまうとそれが崩れる

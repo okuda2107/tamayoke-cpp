@@ -23,6 +23,19 @@ enum RenderConfigID {
     NUM_CONFIG_ID,
 };
 
+struct ShapeLine {
+    Vector3 start;
+    Vector3 end;
+    Vector3 color;
+};
+
+struct ShapeCircle {
+    std::vector<Vector3> verts;
+    Vector3 color;
+    float radius;
+    int segments;
+};
+
 struct RenderData : RenderDataBase {
     Matrix4 mView;
 
@@ -30,6 +43,11 @@ struct RenderData : RenderDataBase {
     std::map<RenderConfigID, std::vector<class MeshComponent*>> mMeshComps;
 
     class SkydomeComponent* mSkydome;
+
+    // 基本的な円や線などを描画するデータを保持
+    // todo: この部分は後から追加した部分．本当はこの構造体とは独立して追加したかった
+    std::map<std::string, ShapeLine> mLines;
+    std::map<std::string, ShapeCircle> mCircles;  // 円用
 
     // 表示するUIを渡す
     // constポインタにすると，ポインタの先の内容を変更はできない．

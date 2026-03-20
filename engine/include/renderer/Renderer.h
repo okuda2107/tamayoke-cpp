@@ -55,6 +55,13 @@ class Renderer : public RendererBase<RenderData> {
     void ApplyConfig(const RenderConfig& id);
     void ResetConfig();
 
+    // 線・円用
+    GLuint mLineVAO;
+    GLuint mLineVBO;
+    class Shader* mLineShader;
+
+    void CreateLineBuffer();
+
    public:
     Renderer();
     ~Renderer();
