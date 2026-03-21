@@ -2,9 +2,11 @@
 #include "Engine.h"
 #include "SDL.h"
 #include "TamayokeGame.h"
+#include "actor/Pose.h"
 #include "game/base/IGame.h"
 #include "game/object/ActorsSystem.h"
 #include "input/pose/InputSystem.h"
+#include "renderer/RenderDB.h"
 #include "renderer/Renderer.h"
 #include "runtime/RuntimeSystem.h"
 #include "scene/SceneTag.h"
@@ -48,6 +50,9 @@ int main(int argc, char** argv) {
         // Load Object
         // Load Audio
         game->LoadAudioBank("Assets/Master.bank");
+
+        game->GetActorQuery()
+            ->CreateActor<Pose, PoseDeps, TypeLists<RenderDB>>();
 
         // Load Scene
         game->SetScene<Title>(SceneName::title.data());

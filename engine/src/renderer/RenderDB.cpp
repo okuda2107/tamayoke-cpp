@@ -92,27 +92,15 @@ void RenderDB::RemoveMeshComp(const RenderConfigID id, MeshComponent* mesh) {
 }
 
 // 一意なidを指定することにより，データを引っ張ってこれるようにする
-void RenderDB::AddLine(const std::string& id, const Vector3& start,
-                       const Vector3& end, const Vector3& color) {
+void RenderDB::AddLine(const int id, const Vector3& start, const Vector3& end,
+                       const Vector3& color) {
     mData.mLines.emplace(id, ShapeLine{start, end, color});
 }
 
-void RenderDB::AddCircle(const std::string& id, const Vector3& center,
-                         float radius, const Vector3& color,
-                         int segments = 32) {
-    ShapeCircle circle;
-    circle.color = color;
-    circle.radius = radius;
-    circle.segments = segments;
-    circle.verts.reserve(segments);
-    for (int i = 0; i < segments; i++) {
-        float theta = (float)i / segments * Math::TwoPi;
-        float x = radius * cosf(theta);
-        float y = radius * sinf(theta);
-
-        circle.verts.emplace_back(center + Vector3(x, y, 0.0f));
-    }
-    mData.mCircles.emplace(id, std::move(circle));
+void RenderDB::AddCircle(const int id, const Vector3& center, float radius,
+                         const Vector3& color, bool filled, int segments) {
+    mData.mCircles.emplace(
+        id, ShapeCircle(center, radius, color, filled, segments));
 }
 
 Texture* RenderDB::GetTexture(const std::string& filename) {

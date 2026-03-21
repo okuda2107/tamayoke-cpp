@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "GL/glew.h"
 #include "RenderData.h"
 #include "SDL.h"
 #include "base/RendererBase.h"

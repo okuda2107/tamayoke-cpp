@@ -30,9 +30,22 @@ struct ShapeLine {
 };
 
 struct ShapeCircle {
-    std::vector<Vector3> verts;
+    Vector3 center;
+    bool filled;
     Vector3 color;
     float radius;
+
+    ShapeCircle(Vector3 center, float radius, Vector3 color, bool filled,
+                int segments = 32);
+
+    ShapeCircle();
+
+    void Update(Vector3 center, float radius);
+
+    const std::vector<Vector3>& GetVerts() const { return verts; }
+
+   private:
+    std::vector<Vector3> verts;
     int segments;
 };
 
@@ -46,8 +59,8 @@ struct RenderData : RenderDataBase {
 
     // 基本的な円や線などを描画するデータを保持
     // todo: この部分は後から追加した部分．本当はこの構造体とは独立して追加したかった
-    std::map<std::string, ShapeLine> mLines;
-    std::map<std::string, ShapeCircle> mCircles;  // 円用
+    std::map<int, ShapeLine> mLines;
+    std::map<int, ShapeCircle> mCircles;  // 円用
 
     // 表示するUIを渡す
     // constポインタにすると，ポインタの先の内容を変更はできない．

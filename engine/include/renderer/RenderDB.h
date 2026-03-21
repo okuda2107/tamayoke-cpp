@@ -33,13 +33,21 @@ class RenderDB : public GameSystemBase {
     }
     void RemoveSkydome() { mData.mSkydome = nullptr; }
 
-    void AddLine(const std::string& id, const Vector3& start,
-                 const Vector3& end, const Vector3& color);
-    void RemoveLine(const std::string& id) { mData.mLines.erase(id); }
+    void AddLine(const int id, const Vector3& start, const Vector3& end,
+                 const Vector3& color);
+    template <typename Func>
+    void UpdateLine(const int id, Func func) {
+        func(mData.mLines[id]);
+    }
+    void RemoveLine(const int id) { mData.mLines.erase(id); }
 
-    void AddCircle(const std::string& id, const Vector3& center, float radius,
-                   const Vector3& color, int segments = 32);
-    void RemoveCircle(const std::string& id) { mData.mCircles.erase(id); }
+    void AddCircle(const int id, const Vector3& center, float radius,
+                   const Vector3& color, bool filled, int segments = 32);
+    template <typename Func>
+    void UpdateCircle(const int id, Func func) {
+        func(mData.mCircles[id]);
+    }
+    void RemoveCircle(const int id) { mData.mCircles.erase(id); }
 
     void SetUI(const std::vector<class UIScreen*>* ui) { mData.mUI = ui; }
 

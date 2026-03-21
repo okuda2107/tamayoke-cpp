@@ -2,11 +2,17 @@
 #include "game/object/IActor.h"
 #include "input/pose/InputState.h"
 
-struct PoseDeps : ActorDeps {};
+struct PoseDeps : ActorDeps {
+    class RenderDB& renderDB;
+
+    PoseDeps(class RenderDB& db) : ActorDeps(), renderDB(db) {}
+};
 
 class Pose : public IActor<pose::InputState> {
-   public:
-    Pose(class ActorsSystem* system, PoseDeps&);
+    class RenderDB& db;
 
-    void ProcessInput(const pose::InputState& state);
+   public:
+    Pose(class ActorsSystem* system, PoseDeps& deps);
+
+    void ActorInput(const pose::InputState& state);
 };
