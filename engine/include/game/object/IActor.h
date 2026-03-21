@@ -8,8 +8,10 @@ class IActor : public Actor {
 
    protected:
     virtual void ActorInput(const T& state) = 0;
-    void IActorInput(const InputStateBase& state) {
-        ActorInput(static_cast<T>(state));
+    void IActorInput(const InputStateBase& state) override {
+        // T& の参照型にしないとバグる
+        // Tだと新たにオブジェクトを作って，そこにInputStateBaseの値をはめ込むみたいな操作になる
+        ActorInput(static_cast<const T&>(state));
     }
 
    public:

@@ -36,5 +36,5 @@ class Pose : public IActor<pose::InputState> {
    public:
     Pose(class ActorsSystem* system, PoseDeps& deps);
 
-    void ActorInput(const pose::InputState& state);
+    void ActorInput(const pose::InputState& state) override;
 };

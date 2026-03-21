@@ -217,7 +217,6 @@ void Renderer::DrawScene(const RenderData& data) {
             glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(verts), verts);
 
             mLineShader->SetVectorUniform("fragColor", line.color);
-            SDL_Log("debug");
 
             glDrawArrays(GL_LINES, 0, 2);
         }
