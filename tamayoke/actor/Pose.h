@@ -4,12 +4,15 @@
 
 struct PoseDeps : ActorDeps {
     class RenderDB& renderDB;
+    class ConfigDB& configDB;
 
-    PoseDeps(class RenderDB& db) : ActorDeps(), renderDB(db) {}
+    PoseDeps(class RenderDB& db, class ConfigDB& config)
+        : ActorDeps(), renderDB(db), configDB(config) {}
 };
 
 class Pose : public IActor<pose::InputState> {
     class RenderDB& db;
+    class ConfigDB& config;
 
     static constexpr int skelton_count = 12;
     static constexpr int skelton[12][2] = {
@@ -38,3 +41,5 @@ class Pose : public IActor<pose::InputState> {
 
     void ActorInput(const pose::InputState& state) override;
 };
+
+Vector3 convertCoordinate(float x, float, float screenW, float screenH);
