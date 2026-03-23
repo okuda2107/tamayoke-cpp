@@ -4,7 +4,8 @@
 
 class GameScene : public Scene {
     ActorID mCoreID;
-    ActorID mLogoID;
+    ActorID mLeftHandCoreID;
+    ActorID mRightHandCoreID;
 
    public:
     void LoadActors();

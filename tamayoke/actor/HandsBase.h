@@ -18,6 +18,7 @@ class HandsBase : public IActor<pose::InputState> {
     size_t mID;
 
    public:
-    HandsBase(class ActorsSystem*, HandsBaseDeps&, size_t);
+    HandsBase(class ActorsSystem*, HandsBaseDeps&, size_t, float,
+              const Vector3&, const std::string&);
     void ActorInput(const pose::InputState& state, int);
 };

@@ -8,13 +8,13 @@
 #include "input/pose/InputState.h"
 #include "renderer/RenderDB.h"
 
-HandsBase::HandsBase(ActorsSystem* system, HandsBaseDeps& deps, size_t id)
+HandsBase::HandsBase(ActorsSystem* system, HandsBaseDeps& deps, size_t id,
+                     float radius, const Vector3& color, const std::string& tag)
     : IActor(system, deps), db(deps.renderDB), config(deps.configDB), mID(id) {
-    db.AddCircle(mID, Vector3::Zero, 100,
-                 Vector3(233.0f / 256, 231.0f / 256, 122.0f / 256), true);
+    db.AddCircle(mID, Vector3::Zero, radius, color, true);
 
     auto sphereComp =
-        new SphereComponent(this, "hand", CollisionCompDeps(deps.phys));
+        new SphereComponent(this, tag, CollisionCompDeps(deps.phys));
     auto sphere = Sphere();
     sphere.mRadius = 100;
     sphereComp->mSphere = sphere;

@@ -68,7 +68,7 @@ void Core::UpdateActor(float deltatime) {
         circle.Update(pos, circle.radius);
     });
 
-    auto vec = phys.GetArray<SphereComponent>("hand");
+    auto vec = phys.GetArray<SphereComponent>("handcore");
     assert(vec);
     for (auto c : *vec) {
         if (Intersect(c->mSphere, mSphereComp->mSphere)) {
