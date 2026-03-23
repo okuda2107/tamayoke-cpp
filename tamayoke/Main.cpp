@@ -2,9 +2,12 @@
 #include "Engine.h"
 #include "SDL.h"
 #include "TamayokeGame.h"
+#include "actor/LeftHand.h"
 #include "actor/Pose.h"
+#include "actor/RightHand.h"
 #include "game/base/IGame.h"
 #include "game/object/ActorsSystem.h"
+#include "game/physics/PhysWorld.h"
 #include "input/pose/InputSystem.h"
 #include "renderer/RenderDB.h"
 #include "renderer/Renderer.h"
@@ -53,6 +56,12 @@ int main(int argc, char** argv) {
 
         game->GetActorQuery()
             ->CreateActor<Pose, PoseDeps, TypeLists<RenderDB, ConfigDB>>();
+        game->GetActorQuery()
+            ->CreateActor<RightHand, HandsBaseDeps,
+                          TypeLists<RenderDB, PhysWorld, ConfigDB>>();
+        game->GetActorQuery()
+            ->CreateActor<LeftHand, HandsBaseDeps,
+                          TypeLists<RenderDB, PhysWorld, ConfigDB>>();
 
         // Load Scene
         game->SetScene<Title>(SceneName::title.data());

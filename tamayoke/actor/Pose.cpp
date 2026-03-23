@@ -2,7 +2,6 @@
 
 #include "../ConfigDB.h"
 #include "input/pose/InputState.h"
-#include "input/pose/InputSystem.h"
 #include "renderer/RenderDB.h"
 
 Pose::Pose(ActorsSystem* system, PoseDeps& deps)
@@ -43,5 +42,5 @@ void Pose::ActorInput(const pose::InputState& state) {
 }
 
 Vector3 convertCoordinate(float x, float y, float screenW, float screenH) {
-    return std::move(Vector3(x - screenW / 2, -y + screenH / 2, 0));
+    return std::move(Vector3(-x + screenW / 2, -y + screenH / 2, 0));
 }

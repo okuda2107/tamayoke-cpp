@@ -246,6 +246,8 @@ void Renderer::DrawScene(const RenderData& data) {
                 glBufferSubData(GL_ARRAY_BUFFER, 0,
                                 sizeof(float) * verts.size(), verts.data());
 
+                mLineShader->SetVectorUniform("fragColor", circle.color);
+
                 glDrawArrays(GL_TRIANGLE_FAN, 0, verts.size() / 3);
             } else {
                 // --- 枠線 ---
@@ -259,6 +261,8 @@ void Renderer::DrawScene(const RenderData& data) {
 
                 glBufferSubData(GL_ARRAY_BUFFER, 0,
                                 sizeof(float) * verts.size(), verts.data());
+
+                mLineShader->SetVectorUniform("fragColor", circle.color);
 
                 glDrawArrays(GL_LINE_LOOP, 0, circle.GetVerts().size());
             }

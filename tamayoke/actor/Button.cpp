@@ -34,18 +34,21 @@ Button::Button(class ActorsSystem* system, ButtonDeps& deps)
     Texture* tex = deps.renderDB.GetTexture("Assets/start/start0.png");
     float boxWitdh = tex->GetWidth();
     float boxHeight = tex->GetHeight();
-    Vector3 minPoint = Vector3(x - boxWitdh / 2, y - boxHeight / 2, 0) * 2;
-    Vector3 maxPoint = Vector3(x + boxWitdh / 2, y + boxHeight / 2, 0) * 2;
+    // テクスチャの幅と高さをそのまま使うと，表示されているboxと誤差が出るので，
+    // 一定の倍率をかける
+    Vector3 minPoint = Vector3(boxWitdh, boxHeight, 0) * (-0.5 / 6);
+    Vector3 maxPoint = Vector3(boxWitdh, boxHeight, 0) * (0.5 / 6);
     auto box = AABB(minPoint, maxPoint);
     mBoxComp->SetObjectBox(box);
 }
 
 void Button::UpdateActor(float deltatime) {
-    auto vec = physSystem.GetArray<SphereComponent>("temp");
+    auto vec = physSystem.GetArray<SphereComponent>("hand");
     // とりあえず
     if (!vec) return;
     assert(vec);
     bool isTouch = false;
+    auto box = mBoxComp->GetWorldBox();
     for (auto c : *vec) {
         if (Intersect(c->mSphere, mBoxComp->GetWorldBox())) {
             isTouch = true;
