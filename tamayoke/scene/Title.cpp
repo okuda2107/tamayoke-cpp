@@ -2,6 +2,7 @@
 
 #include "../actor/Button.h"
 #include "../actor/Logo.h"
+#include "SceneTag.h"
 #include "game/audio/AudioSystem.h"
 #include "game/physics/PhysWorld.h"
 #include "game/scene/ActorQuery.h"
@@ -9,15 +10,28 @@
 
 void Title::LoadActors() {
     // ロゴロード
-    mActorQuery
-        ->CreateActor<Logo, LogoDeps, TypeLists<RenderDB, AudioSystem>>();
+    mLogoID =
+        mActorQuery
+            ->CreateActor<Logo, LogoDeps, TypeLists<RenderDB, AudioSystem>>();
 
-    mActorQuery
-        ->CreateActor<Button, ButtonDeps, TypeLists<RenderDB, PhysWorld>>();
+    mButtonID =
+        mActorQuery
+            ->CreateActor<Button, ButtonDeps, TypeLists<RenderDB, PhysWorld>>();
 }
 
-void Title::UnloadActors() {}
+void Title::UnloadActors() {
+    auto logo = mActorQuery->GetActor<Logo>(mLogoID);
+    if (logo) logo->SetState(Actor::State::EDead);
+    mLogoID = -1;
+    auto button = mActorQuery->GetActor<Button>(mButtonID);
+    if (button) button->SetState(Actor::State::EDead);
+    mButtonID = -1;
+}
 
 void Title::TickRules() {}
 
-std::string Title::PollNextScene() { return ""; }
+std::string Title::PollNextScene() {
+    auto button = mActorQuery->GetActor<Button>(mButtonID);
+    if (!button || button->isFlag) return SceneName::game.data();
+    return "";
+}

@@ -2,7 +2,7 @@
 #include "game/object/Actor.h"
 #include "game/scene/Scene.h"
 
-class Title : public Scene {
+class GameScene : public Scene {
     ActorID mButtonID;
     ActorID mLogoID;
 
