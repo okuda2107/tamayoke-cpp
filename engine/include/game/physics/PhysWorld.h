@@ -51,7 +51,7 @@ class PhysWorld : public GameSystemBase {
 
     // tagに一致する配列が無い場合nullptrを返す．
     template <typename T>
-    const std::vector<T*>* GetArray(std::string tag) {
+    const std::vector<T*>* GetArray(const std::string& tag) {
         std::unordered_map<std::string, std::vector<T*>>& mapArray =
             GetMapArrays<T>();
         auto iter = mapArray.find(tag);

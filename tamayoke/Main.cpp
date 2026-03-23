@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
 
     try {
         // 設定値
-        ConfigDB configDB = ConfigDB(0, 1024.0, 768.0);
+        ConfigDB configDB = ConfigDB(1, 1024.0, 768.0);
 
         // runtime system
         runtimeSystem = new RuntimeSystem();

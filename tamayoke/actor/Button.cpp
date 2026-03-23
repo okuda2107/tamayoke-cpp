@@ -48,7 +48,6 @@ void Button::UpdateActor(float deltatime) {
     if (!vec) return;
     assert(vec);
     bool isTouch = false;
-    auto box = mBoxComp->GetWorldBox();
     for (auto c : *vec) {
         if (Intersect(c->mSphere, mBoxComp->GetWorldBox())) {
             isTouch = true;
