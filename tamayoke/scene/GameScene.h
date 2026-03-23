@@ -3,7 +3,7 @@
 #include "game/scene/Scene.h"
 
 class GameScene : public Scene {
-    ActorID mButtonID;
+    ActorID mCoreID;
     ActorID mLogoID;
 
    public:

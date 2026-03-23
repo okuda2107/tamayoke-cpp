@@ -12,6 +12,7 @@
 #include "renderer/RenderDB.h"
 #include "renderer/Renderer.h"
 #include "runtime/RuntimeSystem.h"
+#include "scene/GameScene.h"
 #include "scene/SceneTag.h"
 #include "scene/Title.h"
 
@@ -65,7 +66,10 @@ int main(int argc, char** argv) {
 
         // Load Scene
         game->SetScene<Title>(SceneName::title.data());
-        game->SetEntryScene(SceneName::title.data());
+        game->SetScene<GameScene>(SceneName::game.data());
+        // game->SetEntryScene(SceneName::title.data());
+        // test
+        game->SetEntryScene(SceneName::game.data());
 
         Engine engine(igame, inputSystem, renderer, runtimeSystem);
 

@@ -20,7 +20,6 @@ HandsBase::HandsBase(ActorsSystem* system, HandsBaseDeps& deps, size_t id)
     sphereComp->mSphere = sphere;
 }
 
-#include "SDL.h"
 void HandsBase::ActorInput(const pose::InputState& state, int keypoint_id) {
     db.UpdateCircle(mID, [=](ShapeCircle& circle) {
         circle.Update(convertCoordinate(state.keypoints[keypoint_id].x,

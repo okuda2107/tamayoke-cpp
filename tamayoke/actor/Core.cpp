@@ -4,6 +4,9 @@
 #include "SDL.h"
 #include "core/Math.h"
 #include "core/Random.h"
+#include "game/physics/PhysWorld.h"
+#include "game/physics/SphereComponent.h"
+#include "renderer/RenderDB.h"
 
 Core::Core(class ActorsSystem* actorsSystem, CoreDeps& deps)
     : Actor(actorsSystem, deps), config(deps.config) {
@@ -17,6 +20,18 @@ Core::Core(class ActorsSystem* actorsSystem, CoreDeps& deps)
     // 進む方向をランダムで決める
     auto rot = rand.GetFloatRange(0.0f, Math::TwoPi);
     SetRotation(Quaternion(Vector3::UnitZ, rot));
+
+    // 当たり判定
+    auto sphereComp =
+        new SphereComponent(this, "core", CollisionCompDeps(deps.phys));
+    auto sphere = Sphere();
+    sphere.mRadius = 100;
+    sphereComp->mSphere = sphere;
+
+    // 円を描画
+    deps.render.AddCircle(150, GetPosition(), 100,
+                          Vector3(255.0f / 256, 83.0f / 256, 182.0f / 256),
+                          true);
 
     // test
     SDL_Log("%f, %f, %f", GetForward().x, GetForward().y, GetForward().z);
